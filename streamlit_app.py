@@ -57,13 +57,13 @@ with col1:
     if baseline_to_use is not None:
         st.audio(baseline_to_use)
         if st.button("Set as Signature"):
-            with st.spinner("Extracting signature features... (may take 30-60s on first request)"):
+            with st.spinner("Extracting signature features... (may take 60-90s on first request - backend is waking up)"):
                 try:
                     # Prepare file for upload
                     files = {"file": ("baseline.wav", baseline_to_use, "audio/wav")}
                     
-                    # Send to API
-                    response = requests.post(f"{API_URL}/api/set-baseline", files=files, timeout=120)
+                    # Send to API with longer timeout for cold starts
+                    response = requests.post(f"{API_URL}/api/set-baseline", files=files, timeout=180)
                     
                     if response.status_code == 200:
                         result = response.json()
@@ -74,7 +74,11 @@ with col1:
                         st.error(f"Failed: {error_detail}")
                 
                 except requests.Timeout:
-                    st.warning("Request timed out. The backend may be starting up (cold start). Please try again in 30 seconds.")
+                    st.error("⏱️ Request timed out after 3 minutes.")
+                    st.info("💡 The backend is cold starting. Please:")
+                    st.markdown("1. Wait 30 seconds")
+                    st.markdown("2. Click 'Set as Signature' again")
+                    st.markdown("3. Or open this link first to wake backend: https://polyglot-ghost-api.onrender.com/health")
                 except Exception as e:
                     st.error(f"Error connecting to API: {str(e)}")
 

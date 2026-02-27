@@ -1,0 +1,8 @@
+{
+  "type": "threshold",
+  "feature": "phase_discontinuity_mean",
+  "threshold": 2.15,
+  "mean": 2.0849814882278443,
+  "std": 0.006551922402651521,
+  "comment": "Threshold increased to 2.15 to avoid false positives from borderline values. Values below 2.15 are considered real, above are AI-generated."
+}

@@ -72,42 +72,72 @@ class RobustVoiceDetector:
         threshold = self.levels.get(strictness, self.levels["normal"])
         
         # -----------------------------------
-        # AI Detection Logic (Improved)
+        # AI Detection Logic (Advanced Frequency Analysis)
         # -----------------------------------
         
-        # Check multiple AI indicators
+        # Check multiple AI indicators based on frequency patterns
         ai_indicators = 0
+        ai_reasons = []
         
-        # 1. Phase discontinuity too low (AI voices are often too smooth)
-        if phase_test < 0.5:
-            ai_indicators += 1
+        # 1. Phase discontinuity analysis (unnatural transitions)
+        if phase_test < 0.3:  # Too smooth - AI voices lack natural micro-variations
+            ai_indicators += 2  # Strong indicator
+            ai_reasons.append("Unnaturally smooth phase transitions")
+        elif phase_test > 2.5:  # Too erratic - generation artifacts
+            ai_indicators += 2
+            ai_reasons.append("Artificial phase artifacts detected")
         
-        # 2. Phase discontinuity too high (artifacts)
-        if phase_test > 2.15:
-            ai_indicators += 1
-        
-        # 3. Spectral characteristics too perfect (low variance)
+        # 2. Spectral consistency (AI voices are too consistent)
         spec_std = test_features.get("spectral_centroid_std", 0)
-        if spec_std < 50:  # Too consistent
+        if spec_std < 80:  # Human voices naturally vary more
             ai_indicators += 1
+            ai_reasons.append("Spectral variance too low (robotic)")
         
-        # 4. MFCC patterns too uniform
+        # 3. Spectral bandwidth analysis (frequency range)
+        spec_bw_mean = test_features.get("spectral_bandwidth_mean", 0)
+        spec_bw_std = test_features.get("spectral_bandwidth_std", 0)
+        if spec_bw_std < 100:  # AI maintains too consistent bandwidth
+            ai_indicators += 1
+            ai_reasons.append("Frequency bandwidth too stable")
+        
+        # 4. MFCC uniformity (AI produces too uniform patterns)
         mfcc_std = test_features.get("mfcc_std", [])
-        if mfcc_std and np.mean(mfcc_std) < 5:  # Too uniform
+        if mfcc_std and np.mean(mfcc_std) < 8:  # Human speech has more variation
             ai_indicators += 1
+            ai_reasons.append("Voice patterns unnaturally uniform")
         
-        # 5. Zero crossing rate anomaly
+        # 5. Zero crossing rate (frequency transitions)
         zcr = test_features.get("zero_crossing_rate_mean", 0)
-        if zcr < 0.01 or zcr > 0.5:  # Unusual range
+        zcr_std = test_features.get("zero_crossing_rate_std", 0)
+        if zcr < 0.02 or zcr > 0.4:  # Outside human range
             ai_indicators += 1
+            ai_reasons.append("Abnormal frequency transitions")
+        if zcr_std < 0.01:  # Too consistent
+            ai_indicators += 1
+            ai_reasons.append("Frequency transitions too regular")
         
-        # Detect AI if 2 or more indicators present
-        if ai_indicators >= 2:
+        # 6. Spectral contrast (harmonic structure)
+        spec_contrast_std = test_features.get("spectral_contrast_std", [])
+        if spec_contrast_std and np.mean(spec_contrast_std) < 2:
+            ai_indicators += 1
+            ai_reasons.append("Harmonic structure too perfect")
+        
+        # 7. Jitter analysis (micro-variations in pitch)
+        jitter = test_features.get("jitter", 0)
+        if jitter < 0.001:  # AI voices lack natural jitter
+            ai_indicators += 2  # Strong indicator
+            ai_reasons.append("Missing natural vocal micro-variations")
+        elif jitter > 0.05:  # Too much jitter (artifacts)
+            ai_indicators += 1
+            ai_reasons.append("Excessive pitch instability")
+        
+        # Detect AI if 3 or more indicators present (more strict)
+        if ai_indicators >= 3:
             is_ai_generated = True
             is_match = False
-            risk_level = "HIGH"
-            verdict = "AI GENERATED VOICE DETECTED"
-            confidence = min(0.95, 0.5 + (ai_indicators * 0.15))
+            risk_level = "CRITICAL"
+            verdict = f"AI GENERATED VOICE DETECTED ({', '.join(ai_reasons[:2])})"
+            confidence = min(0.98, 0.6 + (ai_indicators * 0.08))
         
         # -----------------------------------
         # Identity Matching Logic

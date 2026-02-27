@@ -50,31 +50,31 @@
       },
       {
         "file": "test_results\\elevenlabs_test\\ai_clone_0.wav",
-        "mfcc_similarity": -0.11829665372751474,
+        "mfcc_similarity": -0.16206710737217955,
         "is_deepfake": false,
         "type": "ai_clone"
       },
       {
         "file": "test_results\\elevenlabs_test\\ai_clone_1.wav",
-        "mfcc_similarity": -0.11870900884145708,
+        "mfcc_similarity": -0.13352610611459892,
         "is_deepfake": false,
         "type": "ai_clone"
       },
       {
         "file": "test_results\\elevenlabs_test\\ai_clone_2.wav",
-        "mfcc_similarity": -0.09475838808064907,
+        "mfcc_similarity": -0.11997419703116519,
         "is_deepfake": false,
         "type": "ai_clone"
       },
       {
         "file": "test_results\\elevenlabs_test\\ai_clone_3.wav",
-        "mfcc_similarity": -0.1351022857237303,
+        "mfcc_similarity": -0.19872629489287452,
         "is_deepfake": false,
         "type": "ai_clone"
       },
       {
         "file": "test_results\\elevenlabs_test\\ai_clone_4.wav",
-        "mfcc_similarity": -0.11555182092474947,
+        "mfcc_similarity": -0.10712011615441619,
         "is_deepfake": false,
         "type": "ai_clone"
       }

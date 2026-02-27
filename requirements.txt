@@ -1,27 +1,18 @@
-﻿# Core audio processing
+# FastAPI Backend Requirements
+fastapi>=0.115.0
+uvicorn[standard]>=0.32.0
+python-multipart>=0.0.12
+pydantic>=2.10.0
+
+# Core audio processing
 librosa==0.11.0
 soundfile==0.13.1
 audioread==3.1.0
-PyAudio==0.2.14
 
 # Scientific computing
 numpy==2.4.2
 scipy==1.17.1
 scikit-learn==1.8.0
-
-# Deep learning (for dl_extractor.py and advanced features)
-torch==2.10.0
-torchaudio
-speechbrain
-transformers
-huggingface_hub
-
-# Dashboard
-streamlit==1.54.0
-plotly==6.5.2
-
-# Audio recorder for live recording
-audio-recorder-streamlit
 
 # Utilities
 python-dotenv==1.2.1

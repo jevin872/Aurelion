@@ -1,0 +1,90 @@
+{
+  "metrics": {
+    "accuracy": 0.8333333333333334,
+    "far": 0.14285714285714285,
+    "frr": 0.2,
+    "eer": 0.0,
+    "eer_threshold": 0.4796093214802818
+  },
+  "confusion_matrix": {
+    "true_positives": 4,
+    "false_negatives": 1,
+    "true_negatives": 6,
+    "false_positives": 1
+  },
+  "detailed_results": {
+    "true_positives": [
+      {
+        "file": "dataset/real/clip_1.wav",
+        "mfcc_similarity": 0.5702306001672452,
+        "type": "real_same_speaker"
+      },
+      {
+        "file": "dataset/real/clip_3.wav",
+        "mfcc_similarity": 0.4796093214802818,
+        "type": "real_same_speaker"
+      },
+      {
+        "file": "dataset/real/clip_4.wav",
+        "mfcc_similarity": 0.5486172312399421,
+        "type": "real_same_speaker"
+      },
+      {
+        "file": "dataset/real/clip_5.wav",
+        "mfcc_similarity": 0.5521672028762827,
+        "type": "real_same_speaker"
+      }
+    ],
+    "false_negatives": [
+      {
+        "file": "dataset/real/clip_2.wav",
+        "mfcc_similarity": 0.5473929975100009,
+        "type": "real_same_speaker"
+      }
+    ],
+    "true_negatives": [
+      {
+        "file": "dataset/real/Furqanreal.wav",
+        "mfcc_similarity": -0.20037657437555767,
+        "type": "different_speaker"
+      },
+      {
+        "file": "test_results\\elevenlabs_test\\ai_clone_0.wav",
+        "mfcc_similarity": -0.11829665372751474,
+        "is_deepfake": false,
+        "type": "ai_clone"
+      },
+      {
+        "file": "test_results\\elevenlabs_test\\ai_clone_1.wav",
+        "mfcc_similarity": -0.11870900884145708,
+        "is_deepfake": false,
+        "type": "ai_clone"
+      },
+      {
+        "file": "test_results\\elevenlabs_test\\ai_clone_2.wav",
+        "mfcc_similarity": -0.09475838808064907,
+        "is_deepfake": false,
+        "type": "ai_clone"
+      },
+      {
+        "file": "test_results\\elevenlabs_test\\ai_clone_3.wav",
+        "mfcc_similarity": -0.1351022857237303,
+        "is_deepfake": false,
+        "type": "ai_clone"
+      },
+      {
+        "file": "test_results\\elevenlabs_test\\ai_clone_4.wav",
+        "mfcc_similarity": -0.11555182092474947,
+        "is_deepfake": false,
+        "type": "ai_clone"
+      }
+    ],
+    "false_positives": [
+      {
+        "file": "dataset/real/HimanshuReal.wav",
+        "mfcc_similarity": -0.078009972370644,
+        "type": "different_speaker"
+      }
+    ]
+  }
+}

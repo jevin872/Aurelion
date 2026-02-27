@@ -71,6 +71,13 @@ class RobustVoiceDetector:
 
         threshold = self.levels.get(strictness, self.levels["normal"])
         
+        # Initialize variables
+        is_match = False
+        is_ai_generated = False
+        confidence = max(0.0, 1.0 - weighted_deviation)
+        risk_level = "LOW"
+        verdict = "Processing"
+        
         # -----------------------------------
         # AI Detection Logic (Advanced Frequency Analysis)
         # -----------------------------------

@@ -72,24 +72,47 @@ class RobustVoiceDetector:
         threshold = self.levels.get(strictness, self.levels["normal"])
         
         # -----------------------------------
-        # Rules and Verdicts
+        # AI Detection Logic (Improved)
         # -----------------------------------
         
-        is_match = False
-        is_ai_generated = False
-        confidence = max(0.0, 1.0 - weighted_deviation)
-        risk_level = "LOW"
-        verdict = "Processing"
+        # Check multiple AI indicators
+        ai_indicators = 0
         
-        # Base logical checks
-        if phase_test > 2.15: # AI Generation Threshold from params
-            if phase_test > 4.3 or mfcc_sim < 0.70:
-                is_ai_generated = True
-                is_match = False
-                risk_level = "HIGH"
-                verdict = "AI GENERATED VOICE DETECTED"
-                confidence = min(0.99, (phase_test - 2.15) / 2.0) # High confidence if very anomalous
-                
+        # 1. Phase discontinuity too low (AI voices are often too smooth)
+        if phase_test < 0.5:
+            ai_indicators += 1
+        
+        # 2. Phase discontinuity too high (artifacts)
+        if phase_test > 2.15:
+            ai_indicators += 1
+        
+        # 3. Spectral characteristics too perfect (low variance)
+        spec_std = test_features.get("spectral_centroid_std", 0)
+        if spec_std < 50:  # Too consistent
+            ai_indicators += 1
+        
+        # 4. MFCC patterns too uniform
+        mfcc_std = test_features.get("mfcc_std", [])
+        if mfcc_std and np.mean(mfcc_std) < 5:  # Too uniform
+            ai_indicators += 1
+        
+        # 5. Zero crossing rate anomaly
+        zcr = test_features.get("zero_crossing_rate_mean", 0)
+        if zcr < 0.01 or zcr > 0.5:  # Unusual range
+            ai_indicators += 1
+        
+        # Detect AI if 2 or more indicators present
+        if ai_indicators >= 2:
+            is_ai_generated = True
+            is_match = False
+            risk_level = "HIGH"
+            verdict = "AI GENERATED VOICE DETECTED"
+            confidence = min(0.95, 0.5 + (ai_indicators * 0.15))
+        
+        # -----------------------------------
+        # Identity Matching Logic
+        # -----------------------------------
+        
         if not is_ai_generated:
             # Did they supply the exact same file?
             if phase_sim > 0.95 and spec_sim > 0.95:

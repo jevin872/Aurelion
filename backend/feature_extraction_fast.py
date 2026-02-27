@@ -57,7 +57,12 @@ def extract_features(audio_path, sr=16000, n_mfcc=40):
         for k, v in phase_metrics.items():
             features[f"phase_{k}"] = v
             
-        # 4. Jitter
+        # 4. Zero Crossing Rate (AI Detection)
+        zcr = librosa.feature.zero_crossing_rate(y)[0]
+        features["zero_crossing_rate_mean"] = float(zcr.mean())
+        features["zero_crossing_rate_std"] = float(zcr.std())
+            
+        # 5. Jitter
         features["jitter"] = calculate_jitter(y, sr)
         
         # File info
